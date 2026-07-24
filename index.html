@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impulso Esmeraldas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+
+<header>
+    <div class="header-inner">
+
+      
+        <a href="#" class="marca">
+            
+            <svg class="logo-svg" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <circle cx="30" cy="30" r="30" fill="#0B4C66"/>
+               
+                <rect x="28" y="28" width="4" height="18" rx="2" fill="#a0713a"/>
+                <!-- hojas -->
+                <ellipse cx="30" cy="22" rx="10" ry="5" fill="#2F6E4F" transform="rotate(-30 30 22)"/>
+                <ellipse cx="30" cy="22" rx="10" ry="5" fill="#3d8f65" transform="rotate(15 30 22)"/>
+                <ellipse cx="30" cy="22" rx="9"  ry="4" fill="#2F6E4F" transform="rotate(60 30 22)"/>
+                <!-- ola -->
+                <path d="M10 47 Q20 42 30 47 Q40 52 50 47" stroke="#6DD6F0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            </svg>
+            <span>Impulso Esmeraldas</span>
+        </a>
+
+        <button id="btnFavs" class="btn-icon" title="Mis favoritos">
+            ♡ <span id="contFavs" class="badge" hidden>0</span>
+        </button>
+    </div>
+
+    <!-- Menú de categorías -->
+    <nav id="menuNav">
+        <div class="nav-inner">
+            <!-- Grupo Artesanías -->
+            <div class="grupo">
+                <button class="grupo-btn" onclick="toggleGrupo('g-artesanias')">🧵 Artesanías ▾</button>
+                <div class="submenu" id="g-artesanias">
+                    <button onclick="filtrar('artesanias','')">Ver todas</button>
+                    <button onclick="filtrar('artesanias','ropa')">👕 Ropa y accesorios</button>
+                    <button onclick="filtrar('artesanias','joyeria')">🧣 Joyería textil</button>
+                    <button onclick="filtrar('artesanias','sombreros')">👒 Sombreros pintados</button>
+                </div>
+            </div>
+
+            <!-- Grupo Gastronomía -->
+            <div class="grupo">
+                <button class="grupo-btn" onclick="toggleGrupo('g-gastronomia')">🍽️ Gastronomía ▾</button>
+                <div class="submenu" id="g-gastronomia">
+                    <button onclick="filtrar('gastronomia','')">Ver todas</button>
+                    <button onclick="filtrar('gastronomia','mariscos')">🦐 Mariscos</button>
+                    <button onclick="filtrar('gastronomia','pescados')">🐟 Pescados</button>
+                    <button onclick="filtrar('gastronomia','ceviches')">🦀 Ceviches</button>
+                    <button onclick="filtrar('gastronomia','tradicional')">🌾 Comida tradicional</button>
+                    <button onclick="filtrar('gastronomia','emprendimientos')">🌱 Emprendimientos</button>
+                </div>
+            </div>
+
+            <!-- Grupo Dulces -->
+            <div class="grupo">
+                <button class="grupo-btn" onclick="toggleGrupo('g-dulces')">🍯 Dulces y Bebidas ▾</button>
+                <div class="submenu" id="g-dulces">
+                    <button onclick="filtrar('dulces','')">Ver todos</button>
+                    <button onclick="filtrar('dulces','dulces-trad')">🥥 Dulces tradicionales</button>
+                    <button onclick="filtrar('dulces','bebidas')">🍶 Bebidas artesanales</button>
+                </div>
+            </div>
+
+            <button class="chip-todos" onclick="filtrar('todos','')">Ver todos</button>
+        </div>
+    </nav>
+</header>
+
+
+<section class="hero">
+    <p class="eyebrow">Catálogo de emprendedores</p>
+    <h1>Descubre lo que hacen<br>las manos esmeraldeñas</h1>
+    <p>Artesanías, gastronomía y dulces tradicionales de Esmeraldas, Ecuador.</p>
+    <a href="#catalogo" class="btn-primary">Explorar catálogo →</a>
+</section>
+
+
+
+<main id="catalogo">
+
+  
+    <div class="toolbar">
+        <div class="toolbar-izq">
+            <h2>Emprendimientos</h2>
+            <span id="contResultados" class="badge-verde">30 emprendimientos</span>
+        </div>
+        <div class="toolbar-der">
+            <input type="search" id="buscador" placeholder="🔍 Buscar..." oninput="buscar(this.value)">
+            <select id="ordenar" onchange="ordenarPor(this.value)">
+                <option value="default">Ordenar</option>
+                <option value="az">Nombre A → Z</option>
+                <option value="za">Nombre Z → A</option>
+                <option value="precio-asc">Precio ↑</option>
+                <option value="precio-desc">Precio ↓</option>
+            </select>
+        </div>
+    </div>
+
+   
+    <div class="filtro-precio">
+        <label>💰 Precio máximo: <strong id="lblPrecio">$100+</strong></label>
+        <input type="range" id="rangoPrecio" min="0" max="100" value="100" step="5" oninput="filtrarPrecio(this.value)">
+        <button onclick="reiniciarFiltros()">↺ Reiniciar filtros</button>
+    </div>
+
+   
+    <div id="filtrosActivos"></div>
+
+    <!-- ===== ARTESANÍAS ===== -->
+    <section class="bloque" id="bloque-artesanias" data-cat="artesanias">
+        <h3>🧵 Artesanías</h3>
+        <div class="grilla">
+
+            <article class="tarjeta" data-cat="artesanias" data-sub="ropa" data-precio="25" data-id="esme"
+                data-nombre="Esmeraldeñísima" data-img="images/artesanias.jpg"
+                data-telefono="0991340379" data-correo="jakhirita_r@hotmail.com"
+                data-social="@esmeraldenisima" data-contacto="Jhakira Recalde"
+                data-maps="5%20de%20Agosto%2C%20Esmeraldas">
+                <div class="tarjeta-icono">👕</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Ropa y accesorios</span>
+                    <h4>Esmeraldeñísima</h4>
+                    <p>Ropa y accesorios personalizados —camisetas, vestidos, trajes de baño, sombreros y bolsos— con frases esmeraldeñas.</p>
+                    <p class="ubicacion">📍 5 de Agosto, Esmeraldas</p>
+                    <p class="precio">desde $25</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="esme" title="Guardar en favoritos">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="artesanias" data-sub="ropa" data-precio="15" data-id="entrepatas"
+                data-nombre="Entre Patas Boutique"
+                data-telefono="0989427581" data-correo="dayramikettal@hotmail.com"
+                data-social="@entrepatasboutique" data-contacto="Dayra Miketta"
+                data-maps="Esmeraldas%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🐾</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Accesorios</span>
+                    <h4>Entre Patas Boutique</h4>
+                    <p>Tienda de ropa y accesorios de calidad para perros y gatos en la ciudad de Esmeraldas.</p>
+                    <p class="ubicacion">📍 Esmeraldas, Esmeraldas</p>
+                    <p class="precio">desde $15</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="entrepatas" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="artesanias" data-sub="sombreros" data-precio="30" data-id="alegorica"
+                data-nombre="Alegórica by Katyusca"
+                data-telefono="0985082726" data-correo="katyuskagl2009@gmail.com"
+                data-social="@alegoricaec" data-contacto="Katyusca Guerrero"
+                data-maps="Bartolom%C3%A9%20Ruiz%2C%20Esmeraldas">
+                <div class="tarjeta-icono">👒</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Sombreros pintados</span>
+                    <h4>Alegórica by Katyusca</h4>
+                    <p>Marca de diseño textil nacida en 2019: accesorios de playa y campo, con los sombreros pintados como producto estrella.</p>
+                    <p class="ubicacion">📍 Bartolomé Ruiz, Esmeraldas</p>
+                    <p class="precio">desde $30</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="alegorica" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="artesanias" data-sub="joyeria" data-precio="20" data-id="bellezas"
+                data-nombre="Bellezas AMQ"
+                data-telefono="0988850510" data-correo="damezaq@hotmail.com"
+                data-social="@bellezasamq" data-contacto="Anabel Meza Quiñónez"
+                data-maps="Esmeraldas%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🧣</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Joyería textil</span>
+                    <h4>Bellezas AMQ</h4>
+                    <p>Joyería textil con caña guadua, coco, madera y macramé — fusión de la cultura andina y afroesmeraldeña.</p>
+                    <p class="ubicacion">📍 Esmeraldas, Esmeraldas</p>
+                    <p class="precio">desde $20</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="bellezas" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- ===== GASTRONOMÍA ===== -->
+    <section class="bloque" id="bloque-gastronomia" data-cat="gastronomia">
+        <h3>🍽️ Gastronomía</h3>
+        <div class="grilla">
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="emprendimientos" data-precio="10" data-id="aprocane"
+                data-nombre="APROCANE"
+                data-telefono="0979900099" data-correo="aprocane2000@hotmail.com"
+                data-social="" data-contacto="Andrés Arce Preciado"
+                data-maps="Maldonado%2C%20San%20Lorenzo%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🍫</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Cacao fino</span>
+                    <h4>APROCANE</h4>
+                    <p>Asociación de Productores de Cacao del Norte de Esmeraldas; ocho comunidades productoras de cacao fino de aroma.</p>
+                    <p class="ubicacion">📍 Maldonado, San Lorenzo</p>
+                    <p class="precio">desde $10</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="aprocane" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="mariscos" data-precio="8" data-id="camara"
+                data-nombre="Cámara de Pesquería Esmeraldas"
+                data-telefono="0994499645" data-correo="camarapesqueriaesmeraldas@hotmail.com"
+                data-social="" data-contacto="Rafael Vergara Arboleda"
+                data-maps="Luis%20Tello%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🐟</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Mariscos frescos</span>
+                    <h4>Cámara de Pesquería Esmeraldas</h4>
+                    <p>Mariscos del mar a la mesa: gran variedad de productos marinos frescos para hogares e instituciones.</p>
+                    <p class="ubicacion">📍 Luis Tello, Esmeraldas</p>
+                    <p class="precio">desde $8</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="camara" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="pescados" data-precio="12" data-id="ahumados"
+                data-nombre="Ahumados El Emperador"
+                data-telefono="0989070841" data-correo="junioralencastrog@gmail.com"
+                data-social="@ahumados_emperador" data-contacto="Junior Alencastro"
+                data-maps="Esmeraldas%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🐠</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Pescados ahumados</span>
+                    <h4>Ahumados El Emperador</h4>
+                    <p>Productos ahumados de tierra y mar con normas BPM y HACCP; técnica ancestral de conservación natural.</p>
+                    <p class="ubicacion">📍 Esmeraldas, Esmeraldas</p>
+                    <p class="precio">desde $12</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="ahumados" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="emprendimientos" data-precio="10" data-id="uoprocae"
+                data-nombre="UOPROCAE"
+                data-telefono="0989226237" data-correo="olmedocastrojoma6@gmail.com"
+                data-social="" data-contacto="Lorgio Castro"
+                data-maps="Daule%2C%20Muisne%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🍫</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Cacao orgánico</span>
+                    <h4>UOPROCAE</h4>
+                    <p>Unión de Organizaciones de Productores de Cacao Arriba Esmeraldas: 460 productores, 337 toneladas anuales con certificación orgánica.</p>
+                    <p class="ubicacion">📍 Daule, Muisne, Esmeraldas</p>
+                    <p class="precio">desde $10</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="uoprocae" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="ceviches" data-precio="9" data-id="cevicangre"
+                data-nombre="Cevicangre"
+                data-telefono="0980544347" data-correo="cevicangre_vl@hotmail.com"
+                data-social="Cevicangre Vuelta Larga (Facebook)" data-contacto="Dabexy Burbano"
+                data-maps="Vuelta%20Larga%2C%20Rioverde%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🦀</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Ceviches</span>
+                    <h4>Cevicangre</h4>
+                    <p>Plato estrella nacido en 2008: cangrejo encocado con ceviche de camarón, arroz, patacones y pipa helada.</p>
+                    <p class="ubicacion">📍 Vuelta Larga, Rioverde</p>
+                    <p class="precio">desde $9</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="cevicangre" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="tradicional" data-precio="5" data-id="timbre"
+                data-nombre="Cooperativa Nuevo Timbre"
+                data-telefono="0990307147" data-correo="reinaldoraad@hotmail.com"
+                data-social="" data-contacto="Ramón Raad"
+                data-maps="San%20Mateo%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🌾</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Comida tradicional</span>
+                    <h4>Cooperativa "Nuevo Timbre"</h4>
+                    <p>Cultivo de cacao, limón, plátano, maracuyá y papaya, además de producción avícola, porcina y ganadera.</p>
+                    <p class="ubicacion">📍 San Mateo, Timbre, Esmeraldas</p>
+                    <p class="precio">desde $5</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="timbre" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="mariscos" data-precio="15" data-id="pesquera"
+                data-nombre="Pesquera Obando &amp; Cabezas"
+                data-telefono="0988468109" data-correo="pesqueraobandocabezas@gmail.com"
+                data-social="@pesqueraobandocabezas" data-contacto="Joel Obando"
+                data-maps="El%20Pail%C3%B3n%2C%20San%20Lorenzo%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🐚</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Mariscos</span>
+                    <h4>Pesquera Obando &amp; Cabezas</h4>
+                    <p>Concha prieta empacada en su jugo. Única empresa habilitada para procesar moluscos bivalvos. Distribución en Ecuador y Europa.</p>
+                    <p class="ubicacion">📍 El Pailón, San Lorenzo</p>
+                    <p class="precio">desde $15</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="pesquera" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="emprendimientos" data-precio="8" data-id="washu"
+                data-nombre="Washu Chocolate"
+                data-telefono="0992557707" data-correo="info@washuchocolate.com"
+                data-social="@washuchocolate" data-contacto="Felipe Alonso"
+                data-maps="Santo%20Domingo%20del%20Onzole%2C%20Eloy%20Alfaro%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🍫</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Chocolate</span>
+                    <h4>Washu Chocolate</h4>
+                    <p>Chocolate ligado a la conservación del mono araña de cabeza café; "el sabor de la conservación".</p>
+                    <p class="ubicacion">📍 Santo Domingo del Onzole</p>
+                    <p class="precio">desde $8</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="washu" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="mariscos" data-precio="10" data-id="jafemar"
+                data-nombre="Jafemar Mariscos Express"
+                data-telefono="0994251794" data-correo="jafe_27@hotmail.com"
+                data-social="@jafemar_mariscos_frescos" data-contacto="Ariosto Franco"
+                data-maps="Luis%20Tello%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🦐</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Mariscos express</span>
+                    <h4>Jafemar Mariscos Express</h4>
+                    <p>Productora y comercializadora de mariscos frescos y congelados fundada en 2010 como tesis estudiantil.</p>
+                    <p class="ubicacion">📍 Luis Tello, Esmeraldas</p>
+                    <p class="precio">desde $10</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="jafemar" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="emprendimientos" data-precio="7" data-id="bosca"
+                data-nombre="Bosca Chocolate"
+                data-telefono="0982690890" data-correo=""
+                data-social="@boscachocolate" data-contacto="Pablo Ortiz"
+                data-maps="Bartolom%C3%A9%20Ruiz%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🍫</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Chocolate</span>
+                    <h4>Bosca Chocolate</h4>
+                    <p>Cacao y chocolate desde El Mamey (2017): con maní, arándanos y frutas tropicales. Todos con registro sanitario.</p>
+                    <p class="ubicacion">📍 Bartolomé Ruiz, Esmeraldas</p>
+                    <p class="precio">desde $7</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="bosca" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="pescados" data-precio="6" data-id="perla"
+                data-nombre="Perla del Pacífico"
+                data-telefono="0986490349" data-correo="sgundosalazar284@gmail.com"
+                data-social="" data-contacto="Segundo Salazar"
+                data-maps="Palestina%2C%20Rioverde%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🎣</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Pesca artesanal</span>
+                    <h4>Perla del Pacífico</h4>
+                    <p>Asociación pesquera de adultos mayores constituida en 1989, liderada por Luis Perea y Vicente Plaza.</p>
+                    <p class="ubicacion">📍 Palestina, Rioverde</p>
+                    <p class="precio">desde $6</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="perla" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="emprendimientos" data-precio="10" data-id="asoprotesco"
+                data-nombre="Asoprotesco"
+                data-telefono="0994230448" data-correo=""
+                data-social="" data-contacto="Oswaldo Cedeño"
+                data-maps="Santo%20Domingo%20del%20Onzole%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🌱</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Cacao orgánico</span>
+                    <h4>Asoprotesco</h4>
+                    <p>Cacao fino con certificación orgánica y turismo comunitario en Tesoro Escondido, nacida en 2016.</p>
+                    <p class="ubicacion">📍 Santo Domingo del Onzole</p>
+                    <p class="precio">desde $10</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="asoprotesco" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="emprendimientos" data-precio="8" data-id="chocounion"
+                data-nombre="Cooperativa Chocounión"
+                data-telefono="0991963601" data-correo=""
+                data-social="" data-contacto="Sixto Ponce"
+                data-maps="La%20Uni%C3%B3n%2C%20Quinind%C3%A9%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🍫</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Cacao fino</span>
+                    <h4>Cooperativa Chocounión</h4>
+                    <p>Tres organizaciones campesinas (35 socios) para dar valor agregado al cacao fino de aroma, con apoyo del MAG y la PUCESE.</p>
+                    <p class="ubicacion">📍 La Unión, Quinindé</p>
+                    <p class="precio">desde $8</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="chocounion" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="tradicional" data-precio="5" data-id="aji"
+                data-nombre="Ají Leverone"
+                data-telefono="0991717306" data-correo=""
+                data-social="" data-contacto="Leonardo Leverone"
+                data-maps="Bartolom%C3%A9%20Ruiz%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🌶️</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Condimentos</span>
+                    <h4>Ají Leverone</h4>
+                    <p>Ají artesanal a base de vinagre de banano, sin conservantes, en presentaciones de 150ml y 250ml.</p>
+                    <p class="ubicacion">📍 Bartolomé Ruiz, Esmeraldas</p>
+                    <p class="precio">desde $5</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="aji" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="tradicional" data-precio="6" data-id="naturalpulp"
+                data-nombre="Natural Pulp"
+                data-telefono="0980513168" data-correo="jean_medina@hotmail.com"
+                data-social="" data-contacto="Jean Paul Medina"
+                data-maps="Bartolom%C3%A9%20Ruiz%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🥭</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Frutas tropicales</span>
+                    <h4>Natural Pulp</h4>
+                    <p>Pulpa de frutas de costa y sierra en 15 sabores, para dar salida a pequeños agricultores de la provincia.</p>
+                    <p class="ubicacion">📍 Bartolomé Ruiz, Esmeraldas</p>
+                    <p class="precio">desde $6</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="naturalpulp" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="tradicional" data-precio="12" data-id="platano"
+                data-nombre="Plátano de Exportación"
+                data-telefono="0967786914" data-correo=""
+                data-social="" data-contacto="Joselo Orellana"
+                data-maps="Santa%20Elvira%2C%20Quinind%C3%A9%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🍌</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Exportación</span>
+                    <h4>Plátano de Exportación (Coop. "23 de Enero")</h4>
+                    <p>38 socios dedicados al plátano hartón barraganete exportado a EE.UU. y Europa desde 2019.</p>
+                    <p class="ubicacion">📍 Santa Elvira, Quinindé</p>
+                    <p class="precio">desde $12</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="platano" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="tradicional" data-precio="5" data-id="queso"
+                data-nombre="Queso de Majua Isla San Juan"
+                data-telefono="0993982830" data-correo=""
+                data-social="" data-contacto="José Jaime Vera"
+                data-maps="Recinto%20San%20Juan%2C%20Maj%C3%BAa%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🧀</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Lácteos</span>
+                    <h4>Queso "Isla San Juan"</h4>
+                    <p>15 años elaborando queso criollo con leche de fincas de la parroquia Majua.</p>
+                    <p class="ubicacion">📍 Recinto San Juan, Majúa</p>
+                    <p class="precio">desde $5</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="queso" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="tradicional" data-precio="8" data-id="lakosta"
+                data-nombre="La Kosta"
+                data-telefono="0999727241" data-correo="productoslakosta@gmail.com"
+                data-social="@lakostasazonadores" data-contacto="Karol Valencia"
+                data-maps="Tachina%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🌿</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Sazonadores</span>
+                    <h4>La Kosta</h4>
+                    <p>Sazonadores artesanales de chillangua, chirarán, orégano y albahaca; chimichurris y picante con aceite de oliva.</p>
+                    <p class="ubicacion">📍 Tachina, Esmeraldas</p>
+                    <p class="precio">desde $8</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="lakosta" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="gastronomia" data-sub="emprendimientos" data-precio="9" data-id="seyva"
+                data-nombre="Seyva Cacao"
+                data-telefono="0996634148" data-correo="seyva.cacao@gmail.com"
+                data-social="@seyva.ec" data-contacto="Liliana Banguera"
+                data-maps="5%20de%20Agosto%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🍫</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Cacao eco-amigable</span>
+                    <h4>Seyva Cacao</h4>
+                    <p>Mejora la economía de familias cacaoteras con envases eco-amigables para reducir el uso de plástico.</p>
+                    <p class="ubicacion">📍 5 de Agosto, Esmeraldas</p>
+                    <p class="precio">desde $9</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="seyva" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <!-- ===== DULCES TRADICIONALES ===== -->
+    <section class="bloque" id="bloque-dulces" data-cat="dulces">
+        <h3>🍯 Dulces Tradicionales</h3>
+        <div class="grilla">
+
+            <article class="tarjeta" data-cat="dulces" data-sub="dulces-trad" data-precio="5" data-id="nucifera"
+                data-nombre="Nucifera"
+                data-telefono="0981470496" data-correo="nuciferacocosweet@gmail.com"
+                data-social="@nucifera_dulces" data-contacto="Gladys Girón"
+                data-maps="5%20de%20Agosto%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🥥</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Cocadas</span>
+                    <h4>Nucifera</h4>
+                    <p>Cocadas de sabores desde 2016: coco con cacao, maní, manjar y frutas tropicales como piña, maracuyá y mango.</p>
+                    <p class="ubicacion">📍 5 de Agosto, Esmeraldas</p>
+                    <p class="precio">desde $5</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="nucifera" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="dulces" data-sub="dulces-trad" data-precio="6" data-id="bembe"
+                data-nombre="Bembé"
+                data-telefono="0985026422" data-correo="emma.mar@outlook.com"
+                data-social="@bembe_esme" data-contacto="Emma Landazuri"
+                data-maps="5%20de%20Agosto%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🍬</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Dulces tradicionales</span>
+                    <h4>Bembé</h4>
+                    <p>Emprendimiento familiar esmeraldeño: su nombre significa sabor, tradición y cultura afro.</p>
+                    <p class="ubicacion">📍 5 de Agosto, Esmeraldas</p>
+                    <p class="precio">desde $6</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="bembe" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="dulces" data-sub="dulces-trad" data-precio="7" data-id="jalea"
+                data-nombre="Jalea de Frutas La Lumvrera"
+                data-telefono="0981153333" data-correo=""
+                data-social="" data-contacto="Napoleón León"
+                data-maps="Vuelta%20Larga%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🍯</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Jalea artesanal</span>
+                    <h4>Jalea "La Lumvrera"</h4>
+                    <p>Jalea 100% natural sin conservantes: fruto de pan, piña, mora y quinua.</p>
+                    <p class="ubicacion">📍 Vuelta Larga, Esmeraldas</p>
+                    <p class="precio">desde $7</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="jalea" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="dulces" data-sub="dulces-trad" data-precio="6" data-id="capricho"
+                data-nombre="Cocadas El Capricho"
+                data-telefono="0989556966" data-correo="maritzacabeza1976@gmail.com"
+                data-social="" data-contacto="Maritza Cabezas"
+                data-maps="Borbón%2C%20Eloy%20Alfaro%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🍬</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Cocadas</span>
+                    <h4>Cocadas "El Capricho"</h4>
+                    <p>17 años de tradición: cocadas con manjar, ajonjolí, chocolate y pasas. También miel de caña y panela.</p>
+                    <p class="ubicacion">📍 Recinto El Capricho, Borbón</p>
+                    <p class="precio">desde $6</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="capricho" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="dulces" data-sub="dulces-trad" data-precio="8" data-id="choclocake"
+                data-nombre="Choclo Cake"
+                data-telefono="0982468155" data-correo="choclocake@gmail.com"
+                data-social="@choclocakes" data-contacto=""
+                data-maps="Sim%C3%B3n%20Plata%20Torres%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🌽</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Postres</span>
+                    <h4>Choclo Cake</h4>
+                    <p>Tortas de choclo artesanales desde 2016, con servicio de entrega a domicilio.</p>
+                    <p class="ubicacion">📍 Simón Plata Torres, Esmeraldas</p>
+                    <p class="precio">desde $8</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="choclocake" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="dulces" data-sub="bebidas" data-precio="10" data-id="rompopera"
+                data-nombre="Rompope La Rompopera"
+                data-telefono="0994492255" data-correo="maria_estupinanm@hotmail.com"
+                data-social="@la_rompopera" data-contacto="Ximena Estupiñán"
+                data-maps="Esmeraldas%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🍯</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Bebidas artesanales</span>
+                    <h4>Rompope "La Rompopera"</h4>
+                    <p>Rompopo 100% artesanal desde 2015, con sabores de cacao y coco.</p>
+                    <p class="ubicacion">📍 Esmeraldas, Esmeraldas</p>
+                    <p class="precio">desde $10</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="rompopera" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="tarjeta" data-cat="dulces" data-sub="dulces-trad" data-precio="12" data-id="coconut"
+                data-nombre="Coconut Truffles"
+                data-telefono="0982027575" data-correo="gribilidivini@gmail.com"
+                data-social="@coconut_truffles_" data-contacto="Dayana Proaño"
+                data-maps="Esmeraldas%2C%20Esmeraldas">
+                <div class="tarjeta-icono">🍮</div>
+                <div class="tarjeta-cuerpo">
+                    <span class="subtag">Postres gourmet</span>
+                    <h4>Coconut Truffles</h4>
+                    <p>Cocadas especiales con piña, maracuyá, chocolate y manjar; 3 años innovando en postres gourmet.</p>
+                    <p class="ubicacion">📍 Esmeraldas, Esmeraldas</p>
+                    <p class="precio">desde $12</p>
+                    <div class="tarjeta-acciones">
+                        <button class="btn-ver" onclick="verDetalle(this.closest('.tarjeta'))">Ver info</button>
+                        <button class="btn-fav" onclick="toggleFav(this)" data-id="coconut" title="Guardar">♡</button>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <p id="sinResultados" class="sin-resultados" style="display:none">
+        No se encontraron emprendimientos. Prueba con otra búsqueda o filtro.
+    </p>
+</main>
+
+
+<!-- FORMULARIO -->
+<section id="registro" class="seccion-form">
+    <div class="form-intro">
+        <p class="eyebrow">¿Tienes un emprendimiento?</p>
+        <h2>Súmate al catálogo</h2>
+        <p>Cuéntanos de tu negocio y lo publicaremos gratis.</p>
+        <ul>
+            <li>✅ Publicación gratuita</li>
+            <li>✅ Visibilidad en toda la provincia</li>
+            <li>✅ Llega a turistas y compradores locales</li>
+        </ul>
+    </div>
+    <form id="formRegistro">
+        <div class="campo">
+            <label for="fNombre">Nombre del emprendimiento *</label>
+            <input type="text" id="fNombre" placeholder="Ej. Mariscos Doña Petita">
+            <span class="error" id="errNombre"></span>
+        </div>
+        <div class="campo">
+            <label for="fCategoria">Categoría *</label>
+            <select id="fCategoria">
+                <option value="">Selecciona una categoría</option>
+                <option value="artesanias">Artesanías</option>
+                <option value="gastronomia">Gastronomía</option>
+                <option value="dulces">Dulces Tradicionales</option>
+            </select>
+            <span class="error" id="errCategoria"></span>
+        </div>
+        <div class="campo">
+            <label for="fDesc">Descripción *</label>
+            <textarea id="fDesc" rows="3" placeholder="¿Qué ofreces y qué lo hace especial?"></textarea>
+            <span class="error" id="errDesc"></span>
+        </div>
+        <div class="campo">
+            <label for="fUbicacion">Ubicación *</label>
+            <input type="text" id="fUbicacion" placeholder="Ej. Bartolomé Ruiz, Esmeraldas">
+            <span class="error" id="errUbicacion"></span>
+        </div>
+        <div class="campo">
+            <label for="fTelefono">Teléfono / WhatsApp *</label>
+            <input type="tel" id="fTelefono" placeholder="09XXXXXXXX">
+            <span class="error" id="errTelefono"></span>
+        </div>
+        <div class="campo">
+            <label for="fCorreo">Correo (opcional)</label>
+            <input type="email" id="fCorreo" placeholder="tunegocio@correo.com">
+            <span class="error" id="errCorreo"></span>
+        </div>
+        <button type="submit">Enviar registro ✉️</button>
+        <p id="msgFormulario"></p>
+    </form>
+</section>
+
+
+
+<div id="modal" class="modal-fondo" style="display:none">
+    <div class="modal-caja">
+        <button class="modal-cerrar" onclick="cerrarModal()">✕</button>
+        <p class="modal-categoria" id="mCategoria"></p>
+        <div class="modal-icono" id="mIcono"></div>
+        <h3 id="mNombre"></h3>
+        <p id="mDesc"></p>
+        <div class="modal-info">
+            <p id="mContacto"></p>
+            <p id="mTelefono"></p>
+            <p id="mCorreo"></p>
+            <p id="mSocial"></p>
+            <p id="mUbicacion"></p>
+            <p id="mPrecio"></p>
+        </div>
+        <div class="modal-botones">
+            <a id="mMaps" href="#" target="_blank" class="btn-primary">📍 Cómo llegar</a>
+            <a id="mWhatsapp" href="#" target="_blank" class="btn-secundario">💬 WhatsApp</a>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="panelFavs" class="panel-favs" style="display:none">
+    <div class="panel-cabecera">
+        <h2>❤️ Mis Favoritos</h2>
+        <button onclick="cerrarFavs()">✕</button>
+    </div>
+    <div id="listadoFavs"></div>
+</div>
+<div id="fondoFavs" class="fondo-oscuro" style="display:none" onclick="cerrarFavs()"></div>
+
+
+
+<footer>
+    <div class="footer-grilla">
+        <div>
+            <h3>🌴 Hecho en Esmeraldas</h3>
+            <p>Catálogo digital de emprendedores de artesanías, gastronomía y dulces de la provincia de Esmeraldas.</p>
+        </div>
+        <div>
+            <h4>Explorar</h4>
+            <ul>
+                <li><a href="#catalogo">Catálogo</a></li>
+                <li><a href="#registro">Registrar emprendimiento</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Categorías</h4>
+            <ul>
+                <li><a href="#bloque-artesanias">Artesanías</a></li>
+                <li><a href="#bloque-gastronomia">Gastronomía</a></li>
+                <li><a href="#bloque-dulces">Dulces Tradicionales</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Contacto</h4>
+            <p>impulsoesmeraldas@correo.ec</p>
+            <p>Esmeraldas, Ecuador 🌊</p>
+        </div>
+    </div>
+    <p class="footer-pie">© 2026 Impulso Esmeraldas · Hecho con cariño costeño 🌊</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
